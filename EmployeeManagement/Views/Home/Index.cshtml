@@ -4,13 +4,14 @@
     ViewBag.Title = "Employee List";
 }
 
-<table>
+<table class="table table-bordered">
     <thead>
         <tr>
             <th>ID</th>
             <th>Name</th>
             <th>Email</th>
             <th>Department</th>
+            <th></th>
         </tr>
     </thead>
     <tbody>
@@ -21,6 +22,7 @@
                 <td>@employee.Name</td>
                 <td>@employee.Email</td>
                 <td>@employee.Department</td>
+                <td><a asp-controller="home" asp-action="details" asp-route-id="@employee.Id" class="btn btn-primary">View</a></td>
             </tr>
         }
     </tbody>
