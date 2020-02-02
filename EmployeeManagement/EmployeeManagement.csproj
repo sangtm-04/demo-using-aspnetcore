@@ -5,13 +5,26 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="wwwroot\css\" />
-    <Folder Include="wwwroot\images\" />
+    <Compile Remove="Migrations\20200202144258_AddPhotoPathColumn.cs" />
+    <Compile Remove="Migrations\20200202144258_AddPhotoPathColumn.Designer.cs" />
+    <Compile Remove="Migrations\20200202144513_AddSomeProperty.cs" />
+    <Compile Remove="Migrations\20200202144513_AddSomeProperty.Designer.cs" />
+    <Compile Remove="Migrations\20200202144825_AddPhotoPathColumn.cs" />
+    <Compile Remove="Migrations\20200202144825_AddPhotoPathColumn.Designer.cs" />
+    <Compile Remove="Migrations\20200202144916_AddSomeProperty.cs" />
+    <Compile Remove="Migrations\20200202144916_AddSomeProperty.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.1">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
     <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="3.1.1" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.1" />
+    <PackageReference Include="NLog.Web.AspNetCore" Version="4.9.0" />
   </ItemGroup>
 
 </Project>
