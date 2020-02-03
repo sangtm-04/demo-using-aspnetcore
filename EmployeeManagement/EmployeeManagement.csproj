@@ -13,9 +13,12 @@
     <Compile Remove="Migrations\20200202144825_AddPhotoPathColumn.Designer.cs" />
     <Compile Remove="Migrations\20200202144916_AddSomeProperty.cs" />
     <Compile Remove="Migrations\20200202144916_AddSomeProperty.Designer.cs" />
+    <Compile Remove="Migrations\20200203045626_ExtendIdentityUser.cs" />
+    <Compile Remove="Migrations\20200203045626_ExtendIdentityUser.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="3.1.1" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.1" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.1" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.1">
