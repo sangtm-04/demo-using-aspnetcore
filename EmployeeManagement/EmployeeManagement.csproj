@@ -15,6 +15,26 @@
     <Compile Remove="Migrations\20200202144916_AddSomeProperty.Designer.cs" />
     <Compile Remove="Migrations\20200203045626_ExtendIdentityUser.cs" />
     <Compile Remove="Migrations\20200203045626_ExtendIdentityUser.Designer.cs" />
+    <Compile Remove="Migrations\20200204023455_UpdateDB.cs" />
+    <Compile Remove="Migrations\20200204023455_UpdateDB.Designer.cs" />
+    <Compile Remove="Migrations\20200204023639_UpdateDB_1.cs" />
+    <Compile Remove="Migrations\20200204023639_UpdateDB_1.Designer.cs" />
+    <Compile Remove="Migrations\20200204023755_UpdateDB_2.cs" />
+    <Compile Remove="Migrations\20200204023755_UpdateDB_2.Designer.cs" />
+    <Compile Remove="Migrations\20200204025859_UpdateDB_3.cs" />
+    <Compile Remove="Migrations\20200204025859_UpdateDB_3.Designer.cs" />
+    <Compile Remove="Migrations\20200204030216_UpdateDB.cs" />
+    <Compile Remove="Migrations\20200204030216_UpdateDB.Designer.cs" />
+    <Compile Remove="Migrations\20200204032037_UpdateDB.cs" />
+    <Compile Remove="Migrations\20200204032037_UpdateDB.Designer.cs" />
+    <Compile Remove="Migrations\20200204040646_UpdateDB.cs" />
+    <Compile Remove="Migrations\20200204040646_UpdateDB.Designer.cs" />
+    <Compile Remove="Migrations\20200204040934_UpdateDB.cs" />
+    <Compile Remove="Migrations\20200204040934_UpdateDB.Designer.cs" />
+    <Compile Remove="Migrations\20200204042048_UpdateDB.cs" />
+    <Compile Remove="Migrations\20200204042048_UpdateDB.Designer.cs" />
+    <Compile Remove="Migrations\20200204043331_UpdateDB.cs" />
+    <Compile Remove="Migrations\20200204043331_UpdateDB.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

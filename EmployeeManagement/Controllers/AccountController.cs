@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace EmployeeManagement.Controllers
 {
+    
     public class AccountController : Controller
     {
         private readonly UserManager<ApplicationUser> userManager;

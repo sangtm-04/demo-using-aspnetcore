@@ -33,12 +33,11 @@ namespace EmployeeManagement
             services.AddDbContextPool<AppDbContext>(
                 options => options.UseSqlServer(_config.GetConnectionString("EmployeeDBConnection")));
 
-            services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFrameworkStores<AppDbContext>();
+            services.AddIdentity<ApplicationUser, IdentityRole>()
+                    .AddRoles<IdentityRole>()
+                    .AddEntityFrameworkStores<AppDbContext>();
 
-            services.AddMvc(options => {
-                var policy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
-                options.Filters.Add(new AuthorizeFilter(policy));
-            });
+            services.AddMvc();
             services.AddScoped<IEmployeeRepository, SqlEmployeeRepository>();
         }
 
@@ -62,8 +61,12 @@ namespace EmployeeManagement
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
+                    name: "company",
+                    pattern: "{companyCode}/{controller=Home}/{action=Index}/{id?}");
+                endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
+                
             });
         }
     }

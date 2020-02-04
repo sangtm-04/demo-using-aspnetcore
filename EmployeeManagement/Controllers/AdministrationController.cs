@@ -23,7 +23,7 @@ namespace EmployeeManagement.Controllers
         }
 
         [HttpGet]
-        public IActionResult ListUsers()
+        public IActionResult ListUsers(string companyCode)
         {
             var users = userManager.Users;
 
