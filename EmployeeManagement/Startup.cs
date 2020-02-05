@@ -37,7 +37,31 @@ namespace EmployeeManagement
                     .AddRoles<IdentityRole>()
                     .AddEntityFrameworkStores<AppDbContext>();
 
-            services.AddMvc();
+            services.AddMvc(options =>
+            {
+                var policy = new AuthorizationPolicyBuilder()
+                                .RequireAuthenticatedUser()
+                                .Build();
+                options.Filters.Add(new AuthorizeFilter(policy));
+            });
+
+            services.ConfigureApplicationCookie(options =>
+            {
+                options.AccessDeniedPath = new PathString("/Administration/AccessDenied");
+            });
+
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("DeleteRolePolicy",
+                    policy => policy.RequireClaim("Delete Role", "true"));
+                options.AddPolicy("EditRolePolicy",
+                    policy => policy.RequireClaim("Edit Role", "true"));
+                options.AddPolicy("CreateRolePolicy",
+                    policy => policy.RequireClaim("Create Role", "true"));
+                options.AddPolicy("AdminRolePolicy",
+                    policy => policy.RequireRole("Admin"));
+            });
+
             services.AddScoped<IEmployeeRepository, SqlEmployeeRepository>();
         }
 
