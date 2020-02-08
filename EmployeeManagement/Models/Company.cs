@@ -10,6 +10,7 @@ namespace EmployeeManagement.Models
     {
         [StringLength(36)]
         public string CompanyId { get; set; }
+        public int CompanyCode { get; set; }
         public string CompanyName { get; set; }
     }
 }

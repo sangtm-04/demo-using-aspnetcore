@@ -16,6 +16,10 @@ namespace EmployeeManagement.Models
 
         public DbSet<Employee> Employees { get; set; }
 
+        public DbSet<Company> Company { get; set; }
+
+        public DbSet<UserRoleCompany> UserRoleCompany { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -25,6 +29,8 @@ namespace EmployeeManagement.Models
             {
                 foreignKey.DeleteBehavior = DeleteBehavior.Restrict;
             }
+
+            modelBuilder.Entity<UserRoleCompany>().HasKey(u => new { u.CompanyId, u.UserId, u.RoleId });
         }
     }
 }
