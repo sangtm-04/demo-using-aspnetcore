@@ -42,6 +42,12 @@
     <Compile Remove="Migrations\20200208032444_AddUserRoleCompanyTable.Designer.cs" />
     <Compile Remove="Migrations\20200208035139_AddUserRoleCompanyTable.cs" />
     <Compile Remove="Migrations\20200208035139_AddUserRoleCompanyTable.Designer.cs" />
+    <Compile Remove="Migrations\20200210010953_AddUserRoleCompanyTable.cs" />
+    <Compile Remove="Migrations\20200210010953_AddUserRoleCompanyTable.Designer.cs" />
+    <Compile Remove="Migrations\20200210013346_AddRoleCompanyTable.cs" />
+    <Compile Remove="Migrations\20200210013346_AddRoleCompanyTable.Designer.cs" />
+    <Compile Remove="Migrations\20200210013503_AddRoleCompanyTable.cs" />
+    <Compile Remove="Migrations\20200210013503_AddRoleCompanyTable.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

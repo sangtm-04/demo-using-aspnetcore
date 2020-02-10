@@ -16,21 +16,26 @@ namespace EmployeeManagement.Models
 
         public DbSet<Employee> Employees { get; set; }
 
-        public DbSet<Company> Company { get; set; }
+        public DbSet<RoleCompany> RoleCompany { get; set; }
 
         public DbSet<UserRoleCompany> UserRoleCompany { get; set; }
+
+        public DbSet<UserCompany> UserCompany { get; set; }
+
+        public DbSet<Company> Company { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-            modelBuilder.Seed();
 
-            foreach(var foreignKey in modelBuilder.Model.GetEntityTypes().SelectMany(e => e.GetForeignKeys()))
+            foreach (var foreignKey in modelBuilder.Model.GetEntityTypes().SelectMany(e => e.GetForeignKeys()))
             {
                 foreignKey.DeleteBehavior = DeleteBehavior.Restrict;
             }
 
-            modelBuilder.Entity<UserRoleCompany>().HasKey(u => new { u.CompanyId, u.UserId, u.RoleId });
+            modelBuilder.Entity<RoleCompany>().HasKey(u => new { u.CompanyId, u.RoleId });
+            modelBuilder.Entity<UserCompany>().HasKey(u => new { u.CompanyId, u.UserId });
+            modelBuilder.Entity<UserRoleCompany>().HasKey(u => new { u.CompanyId, u.RoleId, u.UserId });
         }
     }
 }

@@ -4,14 +4,16 @@ using EmployeeManagement.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace EmployeeManagement.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200210013836_AddRoleCompanyTable")]
+    partial class AddRoleCompanyTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -161,22 +163,6 @@ namespace EmployeeManagement.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("RoleCompany");
-                });
-
-            modelBuilder.Entity("EmployeeManagement.Models.UserCompany", b =>
-                {
-                    b.Property<string>("CompanyId")
-                        .HasColumnType("nvarchar(36)")
-                        .HasMaxLength(36);
-
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("CompanyId", "UserId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("UserCompany");
                 });
 
             modelBuilder.Entity("EmployeeManagement.Models.UserRoleCompany", b =>
@@ -358,21 +344,6 @@ namespace EmployeeManagement.Migrations
                     b.HasOne("EmployeeManagement.Models.ApplicationRole", "Role")
                         .WithMany()
                         .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("EmployeeManagement.Models.UserCompany", b =>
-                {
-                    b.HasOne("EmployeeManagement.Models.Company", "Company")
-                        .WithMany()
-                        .HasForeignKey("CompanyId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("EmployeeManagement.Models.ApplicationUser", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
                 });

@@ -28,7 +28,7 @@ namespace EmployeeManagement.Models
             return employee;
         }
 
-        public Employee GetEmployee(int id)
+        public Employee GetEmployee(int id, string companyId)
         {
             _logger.LogTrace("Trace Log");
             _logger.LogDebug("Debug Log");
@@ -36,12 +36,12 @@ namespace EmployeeManagement.Models
             _logger.LogWarning("Warning Log");
             _logger.LogError("Error Log");
             _logger.LogCritical("Critical Log");
-            return _context.Employees.Find(id);
+            return _context.Employees.FirstOrDefault(employee => employee.CompanyId == companyId && employee.Id == id);
         }
 
-        public IEnumerable<Employee> GetEmployees()
+        public IEnumerable<Employee> GetEmployees(string companyId)
         {
-            return _context.Employees;
+            return _context.Employees.Where(employee => employee.CompanyId == companyId);
         }
 
         public Employee Insert(Employee employee)

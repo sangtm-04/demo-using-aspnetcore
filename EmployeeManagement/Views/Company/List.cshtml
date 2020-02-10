@@ -1,0 +1,84 @@
+﻿@inject UserManager<ApplicationUser> userManager;
+@inject AppDbContext context;
+@{
+    Layout = null;
+    ViewBag.Title = "Danh sách công ty";
+    var userId = userManager.GetUserId(User);
+    var userCompanies = context.UserCompany;
+}
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.Title</title>
+    <link href="~/lib/twitter-bootstrap/css/bootstrap.css" rel="stylesheet" />
+    <link href="~/css/site.css" rel="stylesheet" asp-append-version="true" />
+</head>
+<body>
+    <div class="getting-body h-100">
+        <div class="getting-container h-100">
+            <div class="getting-header">
+                <div class="m-row align-items-end">
+                    <a class="logo-misa flex-grow-1" href="#"></a>
+
+                    <div class="g-userinfo m-row d-flex align-items-center account-settings">
+                        <img class="img-profile" />
+                        <div class="account-name">@User.Identity.Name</div>
+                        <div class="mx-1"> | </div>
+                        <a class="g-logout" asp-controller="Account" asp-action="Logout">Đăng xuất</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="getting-content flex">
+                <div class="select-company-container bg-white">
+                    <div class="company-content h-100">
+                        <div class="title-header p-3">
+                            <div class="m-row d-flex align-items-center mb-2">
+                                <h4 class="h3 mb-0 flex-grow-1">Danh sách công ty</h4>
+                                <a asp-controller="Company" asp-action="Create" class="btn btn-primary w-auto">
+                                    Thêm công ty
+                                </a>
+                            </div>
+                            <div class="m-row font-size-18">Vui lòng chọn công ty bạn muốn làm việc</div>
+                        </div>
+                        <div class="list-item-container">
+                            <div class="list-item-active pl-4 pb-3 pr-3">
+                                <div class="content-list-item">
+
+                                    @{
+                                        if (userCompanies.Count() > 0)
+                                        {
+                                            foreach (var record in userCompanies)
+                                            {
+                                                if (record.UserId == userId)
+                                                {
+                                                    var company = context.Company.FirstOrDefault(c => c.CompanyId == record.CompanyId);
+                                                    <div class="m-row flex-center pt-3">
+                                                        <a href="#" class="company-select-active">
+                                                            <i class="far fa-check-circle font-size-18 mr-2 font-weight-bold"></i>
+                                                            <span class="company-name font-weight-bold">@company.CompanyName</span>
+                                                        </a>
+                                                    </div>
+                                                }
+                                            }
+                                        }
+                                        else
+                                        {
+                                            <div>Chưa có công ty nào</div>
+                                        }
+                                    }
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="getting-footer">
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

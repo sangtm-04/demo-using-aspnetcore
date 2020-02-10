@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -21,6 +22,11 @@ namespace EmployeeManagement.Models
         public Dept? Department { get; set; }
 
         public string PhotoPath { get; set; }
+
+        [Required, StringLength(36)]
+        public string CompanyId { get; set; }
+        [ForeignKey("CompanyId")]
+        public virtual Company Company { get; set; }
 
     }
 }

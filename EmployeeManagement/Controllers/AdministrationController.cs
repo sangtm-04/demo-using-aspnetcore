@@ -18,20 +18,24 @@ namespace EmployeeManagement.Controllers
     {
         private readonly RoleManager<IdentityRole> roleManager;
         private readonly UserManager<ApplicationUser> userManager;
+        private readonly AppDbContext context;
         private readonly ILogger<AdministrationController> logger;
 
         public AdministrationController(RoleManager<IdentityRole> roleManager, UserManager<ApplicationUser> userManager,
-                                        ILogger<AdministrationController> logger)
+                                        AppDbContext context, ILogger<AdministrationController> logger)
         {
             this.roleManager = roleManager;
             this.userManager = userManager;
+            this.context = context;
             this.logger = logger;
         }
 
         [HttpGet]
         public IActionResult ListUsers(string companyCode)
         {
-            var users = userManager.Users;
+            var company = context.Company.FirstOrDefault(company => company.CompanyCode == companyCode);
+            var userRoleCompanies = context.UserRoleCompany.Where(record => record.CompanyId == company.CompanyId);
+            var users = userManager.Users.Where(user => userRoleCompanies.Any(userRoleCompany => userRoleCompany.UserId == user.Id));
 
             return View(users);
         }

@@ -34,10 +34,7 @@ namespace EmployeeManagement
             services.AddDbContextPool<AppDbContext>(
                 options => options.UseSqlServer(_config.GetConnectionString("EmployeeDBConnection")));
 
-            services.AddIdentity<ApplicationUser, IdentityRole>(options => { 
-                        options.SignIn.RequireConfirmedEmail = true;
-                    })
-                    .AddRoles<IdentityRole>()
+            services.AddIdentity<ApplicationUser, IdentityRole>()
                     .AddEntityFrameworkStores<AppDbContext>();
 
             services.AddMvc(options =>
@@ -78,6 +75,10 @@ namespace EmployeeManagement
             });
 
             services.AddScoped<IEmployeeRepository, SqlEmployeeRepository>();
+            services.AddScoped<IRoleCompanyRepository, SqlRoleCompanyRepository>();
+            services.AddScoped<IUserCompanyRepository, SqlUserCompanyRepository>();
+            services.AddScoped<ICompanyRepository, SqlCompanyRepository>();
+            services.AddScoped<IUserRoleCompanyRepository, SqlUserRoleCompanyRepository>();
 
             services.AddSingleton<IAuthorizationHandler, CanEditOnlyOtherAdminRolesAndClaimsHandler>();
             services.AddSingleton<IAuthorizationHandler, SuperAdminHandler>();
@@ -108,30 +109,18 @@ namespace EmployeeManagement
                 // Không có company code
                 endpoints.MapControllerRoute(
                     name: "NoCompany",
-                    pattern: "{language}/{controller=Company}/{action=Index}/{id?}",
-                    defaults: new
-                    {
-                        language = lang
-                    },
+                    pattern: "{controller=Company}/{action=List}/{id?}",
                     constraints: new
                     {
-                        controller = "company|error",
-                        language = "vi|en"
+                        controller = "Company|Error|Account"
                     }
                 );
 
                 // Các link trang nghiệp vụ
                 endpoints.MapControllerRoute(
                     name: "Business",
-                    pattern: "{companyCode}/{controller=Company}/{action=Index}/{id?}",
-                    defaults: new
-                    {
-                        language = lang
-                    },
-                    constraints: new
-                    {
-                        companyCode = @"\d+"
-                    }
+                    pattern: "{companyCode}/{controller=Company}/{action=List}/{id?}"
+                    
                 );
             });
         }

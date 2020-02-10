@@ -17,24 +17,44 @@ namespace EmployeeManagement.Controllers
     {
         private readonly IEmployeeRepository _employeeRepository;
         private readonly IWebHostEnvironment _webHostEnvironment;
+        private readonly AppDbContext context;
         private readonly ILogger _logger;
 
-        public HomeController(IEmployeeRepository employeeRepository, IWebHostEnvironment webHostEnvironment, ILogger<HomeController> logger)
+        public HomeController(IEmployeeRepository employeeRepository, IWebHostEnvironment webHostEnvironment, AppDbContext context, ILogger<HomeController> logger)
         {
             _employeeRepository = employeeRepository;
             _webHostEnvironment = webHostEnvironment;
+            this.context = context;
             _logger = logger;
         }
 
         [AllowAnonymous]
-        public IActionResult Index()
+        public IActionResult Index(string companyCode)
         {
-            var employees = _employeeRepository.GetEmployees();
+            if (companyCode == null)
+            {
+                return Redirect("/Account/Login");
+            }
+            else
+            {
+                return RedirectToAction("/Home/ListEmployees", companyCode);
+            }
+        }
+
+        public IActionResult ListEmployees(string companyCode)
+        {
+            var company = GetCompanyByCompanyCode(companyCode);
+            var employees = _employeeRepository.GetEmployees(company.CompanyId);
             return View(employees);
         }
 
+        public Company GetCompanyByCompanyCode(string companyCode)
+        {
+            return context.Company.FirstOrDefault(company => company.CompanyCode == companyCode);
+        }
+
         [AllowAnonymous]
-        public IActionResult Details(int? id)
+        public IActionResult Details(int? id, string companyCode)
         {
             //throw new Exception("Error in Details View");
 
@@ -45,7 +65,8 @@ namespace EmployeeManagement.Controllers
             _logger.LogError("Error Log");
             _logger.LogCritical("Critical Log");
 
-            Employee employee = _employeeRepository.GetEmployee(id.Value);
+            var company = GetCompanyByCompanyCode(companyCode);
+            Employee employee = _employeeRepository.GetEmployee(id.Value, company.CompanyId);
             if (employee == null)
             {
                 Response.StatusCode = 404;
@@ -68,10 +89,11 @@ namespace EmployeeManagement.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create(EmployeeCreateViewModel model)
+        public IActionResult Create(EmployeeCreateViewModel model, string companyCode)
         {
             if (ModelState.IsValid)
             {
+                var company = GetCompanyByCompanyCode(companyCode);
                 string uniqueFileName = ProcessUploadedFile(model);
                 Employee newEmployee = new Employee
                 {
@@ -79,17 +101,19 @@ namespace EmployeeManagement.Controllers
                     Email = model.Email,
                     Department = model.Department,
                     PhotoPath = uniqueFileName,
+                    CompanyId = company.CompanyId
                 };
                 _employeeRepository.Insert(newEmployee);
-                return RedirectToAction("details", new { id = newEmployee.Id });
+                return RedirectToAction("details", "home", new { id = newEmployee.Id, companyCode });
             }
             return View();
         }
 
         [HttpGet]
-        public IActionResult Edit(int id)
+        public IActionResult Edit(int id, string companyCode)
         {
-            Employee employee = _employeeRepository.GetEmployee(id);
+            var company = GetCompanyByCompanyCode(companyCode);
+            Employee employee = _employeeRepository.GetEmployee(id, company.CompanyId);
             EmployeeEditViewModel employeeEditViewModel = new EmployeeEditViewModel
             {
                 Id = employee.Id,
@@ -102,11 +126,12 @@ namespace EmployeeManagement.Controllers
         }
 
         [HttpPost]
-        public IActionResult Edit(EmployeeEditViewModel model)
+        public IActionResult Edit(EmployeeEditViewModel model, string companyCode)
         {
             if (ModelState.IsValid)
             {
-                Employee employee = _employeeRepository.GetEmployee(model.Id);
+                var company = GetCompanyByCompanyCode(companyCode);
+                Employee employee = _employeeRepository.GetEmployee(model.Id, company.CompanyId);
                 employee.Name = model.Name;
                 employee.Email = model.Email;
                 employee.Department = model.Department;

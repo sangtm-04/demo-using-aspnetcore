@@ -8,16 +8,12 @@ using System.Threading.Tasks;
 
 namespace EmployeeManagement.Models
 {
-    public class UserRoleCompany
+    public class RoleCompany
     {
         [Required, StringLength(36)]
         public string CompanyId { get; set; }
         [ForeignKey("CompanyId")]
         public virtual Company Company { get; set; }
-
-        public string UserId { get; set; }
-        [ForeignKey("UserId")]
-        public virtual ApplicationUser User { get; set; }
 
         public string RoleId { get; set; }
         [ForeignKey("RoleId")]

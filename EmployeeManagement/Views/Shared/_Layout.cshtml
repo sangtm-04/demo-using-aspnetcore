@@ -1,5 +1,16 @@
 ﻿@inject SignInManager<ApplicationUser> signInManager;
-
+@inject UserManager<ApplicationUser> userManager;
+@inject AppDbContext context;
+@{ 
+    var userId = userManager.GetUserId(User);
+    var company = new UserRoleCompany();
+    string companyCode = null;
+    if (userId != null)
+    {
+        company = context.UserRoleCompany.FirstOrDefault(record => record.UserId == userId);
+        companyCode = context.Company.FirstOrDefault(record => record.CompanyId == company.CompanyId).CompanyCode;
+    }
+}
 <!DOCTYPE html>
 
 <html>
@@ -12,7 +23,7 @@
 <body>
     <div class="container">
         <nav class="navbar navbar-expand-sm bg-dark navbar-dark ">
-            <a class="navbar-brand" asp-controller="home" asp-action="index">
+            <a class="navbar-brand" asp-controller="home" asp-action="index" asp-route-companyCode="@companyCode">
                 <img src="~/images/myspace.svg" width="30" height="30" />
             </a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
@@ -21,20 +32,26 @@
             <div id="collapsibleNavbar" class="collapse navbar-collapse">
                 <ul class="navbar-nav">
                     <li class="nav-item">
-                        <a class="nav-link" asp-controller="home" asp-action="index">List</a>
+                        <a class="nav-link" asp-controller="home" asp-action="ListEmployees" asp-route-companyCode="@companyCode">List</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" asp-controller="home" asp-action="create">Create</a>
+                        <a class="nav-link" asp-controller="home" asp-action="create" asp-route-companyCode="@companyCode">Create</a>
                     </li>
+                    @if (signInManager.IsSignedIn(User))
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="company" asp-action="list">List Company</a>
+                        </li>
+                    }
                     @if (signInManager.IsSignedIn(User) && User.IsInRole("Admin"))
                     {
                         <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" 
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink"
                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 Manage
                             </a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                                <a class="dropdown-item" asp-controller="Administration" asp-action="ListUsers">Users</a>
+                                <a class="dropdown-item" asp-controller="Administration" asp-action="ListUsers" asp-route-companyCode="@companyCode">Users</a>
                                 <a class="dropdown-item" asp-controller="Administration" asp-action="ListRoles">Roles</a>
                             </div>
                         </li>
