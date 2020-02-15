@@ -4,7 +4,7 @@
     Layout = null;
     ViewBag.Title = "Danh sách công ty";
     var userId = userManager.GetUserId(User);
-    var userCompanies = context.UserCompany;
+    var userRoleCompanies = context.UserRoleCompany;
 }
 <!DOCTYPE html>
 
@@ -48,9 +48,9 @@
                                 <div class="content-list-item">
 
                                     @{
-                                        if (userCompanies.Count() > 0)
+                                        if (userRoleCompanies.Count() > 0)
                                         {
-                                            foreach (var record in userCompanies)
+                                            foreach (var record in userRoleCompanies)
                                             {
                                                 if (record.UserId == userId)
                                                 {
@@ -61,6 +61,10 @@
                                                             <span class="company-name font-weight-bold">@company.CompanyName</span>
                                                         </a>
                                                     </div>
+                                                }
+                                                else
+                                                {
+                                                    <div>Chưa có công ty nào</div>
                                                 }
                                             }
                                         }

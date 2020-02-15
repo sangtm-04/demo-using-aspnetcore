@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using EmployeeManagement.Models;
 using EmployeeManagement.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
@@ -27,6 +28,7 @@ namespace EmployeeManagement.Controllers
             this.roleManager = roleManager;
         }
 
+        [Authorize(Policy = "AtLeast21")]
         [HttpGet]
         public IActionResult List()
         {

@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace EmployeeManagement.Controllers
 {
-    [Authorize]
+    [Authorize(Policy = "AtLeast21")]
     public class HomeController : Controller
     {
         private readonly IEmployeeRepository _employeeRepository;

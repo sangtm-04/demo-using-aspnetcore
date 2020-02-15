@@ -4,6 +4,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using EmployeeManagement.Models;
 using EmployeeManagement.Security;
+using EmployeeManagement.Services.Handlers;
+using EmployeeManagement.Services.Requirements;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -52,7 +54,8 @@ namespace EmployeeManagement
                     options.ClientSecret = "9tl_tkrEVVdODuNsccc8hy5v";
                     options.CallbackPath = new PathString("/Account/ExternalLoginCallback");
                 })
-                .AddFacebook(options => {
+                .AddFacebook(options =>
+                {
                     options.AppId = "1451127728395370";
                     options.AppSecret = "06c056e5090c7f6b30c5c91ab96f35ed";
                 });
@@ -72,6 +75,8 @@ namespace EmployeeManagement
                     policy => policy.RequireClaim("Create Role", "true"));
                 options.AddPolicy("AdminRolePolicy",
                     policy => policy.RequireRole("Admin"));
+                options.AddPolicy("AtLeast21", policy =>
+                    policy.Requirements.Add(new MinimumAgeRequirement(21)));
             });
 
             services.AddScoped<IEmployeeRepository, SqlEmployeeRepository>();
@@ -82,6 +87,7 @@ namespace EmployeeManagement
 
             services.AddSingleton<IAuthorizationHandler, CanEditOnlyOtherAdminRolesAndClaimsHandler>();
             services.AddSingleton<IAuthorizationHandler, SuperAdminHandler>();
+            services.AddSingleton<IAuthorizationHandler, MinimumAgeHandler>();
             services.AddHttpContextAccessor();
         }
 
@@ -120,8 +126,11 @@ namespace EmployeeManagement
                 endpoints.MapControllerRoute(
                     name: "Business",
                     pattern: "{companyCode}/{controller=Company}/{action=List}/{id?}"
-                    
+
                 );
+                //endpoints.MapControllerRoute(
+                //    name: "default",
+                //    pattern: "{controller=Home}/{action=Index}/{id?}");
             });
         }
     }
